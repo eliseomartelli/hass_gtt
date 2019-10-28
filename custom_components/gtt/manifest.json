@@ -6,5 +6,5 @@
     "pygtt==1.1.2"
   ],
   "dependencies": [],
-  "codeowners": []
+  "codeowners": ["@eliseomartelli"]
 }
