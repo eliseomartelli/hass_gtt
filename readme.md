@@ -15,8 +15,8 @@ sensor:
     bus_name: 10
 ```
 
+| Option | Default | Optional |
 |---|---|---|
-|Option|Default|Optional|
-|stop|none|no|
-|bus_name|none|yes|
+| stop | none | no |
+| bus_name | none | yes |
 
