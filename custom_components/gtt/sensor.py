@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 import voluptuous as vol
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import DEVICE_CLASS_TIMESTAMP
+from homeassistant.const import DEVICE_CLASS_TIMESTAMP, CONF_NAME
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
@@ -19,7 +19,11 @@ ICON = "mdi:train"
 SCAN_INTERVAL = timedelta(minutes=2)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {vol.Required(CONF_STOP): cv.string, vol.Optional(CONF_BUS_NAME): cv.string}
+    {
+        vol.Required(CONF_STOP): cv.string, 
+        vol.Optional(CONF_BUS_NAME): cv.string,
+        vol.Optional(CONF_NAME): cv.string
+    }
 )
 
 
@@ -27,22 +31,26 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Gtt platform."""
     stop = config[CONF_STOP]
     bus_name = config.get(CONF_BUS_NAME)
+    name = config.get(CONF_NAME)
 
-    add_entities([GttSensor(stop, bus_name)], True)
+    add_entities([GttSensor(stop, bus_name, name)], True)
 
 
 class GttSensor(Entity):
     """Representation of a Gtt Sensor."""
 
-    def __init__(self, stop, bus_name):
+    def __init__(self, stop, bus_name, name):
         """Initialize the Gtt sensor."""
         self.data = GttData(stop, bus_name)
         self._state = None
+        self._custom_name = name
         self._name = f"Stop {stop}"
 
     @property
     def name(self):
         """Return the name of the sensor."""
+        if self.custom_name:
+            return self._custom_name
         return self._name
 
     @property
