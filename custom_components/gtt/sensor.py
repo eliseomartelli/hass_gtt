@@ -49,7 +49,7 @@ class GttSensor(Entity):
     @property
     def name(self):
         """Return the name of the sensor."""
-        if self.custom_name:
+        if self._custom_name:
             return self._custom_name
         return self._name
 
